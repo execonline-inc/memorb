@@ -11,13 +11,17 @@ Gem::Specification.new do |s|
   s.license     = 'MIT'
   s.authors     = ['Patrick Rebsch']
   s.email       = ['pjrebsch@gmail.com']
-  s.homepage    = 'https://github.com/pjrebsch/memorb'
+  s.homepage    = 'https://github.com/execonline-inc/memorb'
   s.summary     = 'Memoization made easy'
   s.description = <<~TXT
     Memorb makes instance method memoization easy to set up and use.
+    Forked from https://github.com/pjrebsch/memorb.
   TXT
 
-  s.required_ruby_version     = '>= 2.3', '< 3.4'
+  s.metadata["homepage_uri"] = s.homepage
+  s.metadata["source_code_uri"] = s.homepage
+
+  s.required_ruby_version     = '>= 2.3', '< 3.5'
   s.required_rubygems_version = '>= 2.5'
 
   s.add_development_dependency 'bundler', '~> 2.0'

@@ -1,4 +1,4 @@
-name: Test Suite
+name: Test and Publish
 on:
   pull_request:
     branches: ["*"]
@@ -11,28 +11,10 @@ jobs:
       matrix:
         # https://bundler.io/compatibility.html
         ruby:
+          - version: ruby-3.4
+            bundler: "2.6"
           - version: ruby-3.3
             bundler: "2.5"
-          - version: ruby-3.2
-            bundler: "2.5"
-          - version: ruby-3.1
-            bundler: "2.5"
-          - version: ruby-3.0
-            bundler: "2.5"
-          - version: ruby-2.7
-            bundler: "2.4"
-          - version: ruby-2.6
-            bundler: "2.4"
-          - version: ruby-2.5
-            bundler: "2.3"
-          - version: ruby-2.4
-            bundler: "2.3"
-          - version: jruby-9.4
-            bundler: "2.5"
-          - version: jruby-9.3
-            bundler: "2.4"
-          - version: jruby-9.2
-            bundler: "2.3"
     name: ${{ matrix.ruby.version }}
     runs-on: ubuntu-latest
     steps:
@@ -48,3 +30,38 @@ jobs:
         run: bundle install
       - name: Run tests
         run: bundle exec rspec
+
+  publish:
+    name: Publish to GitHub Packages
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ruby-3.4
+
+      - name: Configure gem credentials
+        run: |
+          mkdir -p ~/.gem
+          cat > ~/.gem/credentials << EOF
+          ---
+          :github: Bearer ${GITHUB_TOKEN}
+          EOF
+          chmod 0600 ~/.gem/credentials
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build gem
+        run: gem build *.gemspec
+
+      - name: Publish to GitHub Packages
+        run: |
+          gem push --key github --host https://rubygems.pkg.github.com/${{ github.repository_owner }} *.gem
