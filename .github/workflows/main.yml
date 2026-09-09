@@ -3,7 +3,7 @@ on:
   pull_request:
     branches: ["*"]
   push:
-    branches: [master]
+    branches: [main]
 jobs:
   test:
     strategy:
@@ -11,6 +11,8 @@ jobs:
       matrix:
         # https://bundler.io/compatibility.html
         ruby:
+          - version: ruby-4.0
+            bundler: "4.0"
           - version: ruby-3.4
             bundler: "2.6"
           - version: ruby-3.3
@@ -19,9 +21,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1.321.0
         with:
           ruby-version: ${{ matrix.ruby.version }}
       - name: Install bundler
@@ -34,17 +36,17 @@ jobs:
   publish:
     name: Publish to GitHub Packages
     needs: test
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
+        uses: ruby/setup-ruby@95ef2b042f9d7a56d8268cba8559e2842e2ad01b # v1.321.0
         with:
           ruby-version: ruby-3.4
 

@@ -21,10 +21,10 @@ Gem::Specification.new do |s|
   s.metadata["homepage_uri"] = s.homepage
   s.metadata["source_code_uri"] = s.homepage
 
-  s.required_ruby_version     = '>= 2.3', '< 3.5'
+  s.required_ruby_version     = '>= 2.3'
   s.required_rubygems_version = '>= 2.5'
 
-  s.add_development_dependency 'bundler', '~> 2.0'
+  s.add_development_dependency 'bundler', '>= 2.0'
   s.add_development_dependency 'rspec', '~> 3.9'
   s.add_dependency 'concurrent-ruby', '~> 1.1'
 

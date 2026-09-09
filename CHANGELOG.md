@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2026-09-09
+
+### Changed
+
+- Add support for Ruby 4.0.x and remove the upper bound on `required_ruby_version`.
+- Relax the `bundler` development dependency to `>= 2.0` so `bundle install` works with Bundler 4 (bundled with Ruby 4.0).
+
 ## [1.0.0] - 2025-03-03
 
 ### Changed
